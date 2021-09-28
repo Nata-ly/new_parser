@@ -28,6 +28,13 @@ def karus_method
   html_array
 end
 
+def rarim_method
+  site_url = "http://www.rarim.ru/razmeshchenie-reklamy-na-reklamonositelyah/karta-razmeshcheniya/"
+  document = get_nokogiri_document(site_url)
+  table = document.css('script')
+  
+end
+
 def get_nokogiri_document(url)
   server = url
   response = RestClient.get(server)
@@ -36,11 +43,10 @@ end
 
 puts "What site are we going to parse? (K)arus.ru, (R)arim.ru"
 str = gets.strip.capitalize
-
 if str == 'K'
-  karus_method
+  puts karus_method
 elsif str == 'R'
-  puts 'R'
+  rarim_method
 else
   puts "You haven't selected anything"
 end
