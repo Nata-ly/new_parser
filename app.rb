@@ -2,9 +2,8 @@ require 'nokogiri'
 require 'rest-client'
 
 def karus_method
-  server = "https://karus.ru/program/?city=&adv_type=&search=&letters=&page=&per_page=&preview=true&map=false&per_page=True"
-  response = RestClient.get(server)
-  document = Nokogiri::HTML(response)
+  site_url = "https://karus.ru/program/?city=&adv_type=&search=&letters=&page=&per_page=&preview=true&map=false&per_page=True"
+  document = get_nokogiri_document(site_url)
   table = document.at('table.table-data')
   html_array=[]
   table.css('tr').each do |tr_node|
@@ -29,6 +28,11 @@ def karus_method
   html_array
 end
 
+def get_nokogiri_document(url)
+  server = url
+  response = RestClient.get(server)
+  Nokogiri::HTML(response)
+end
 
 puts "What site are we going to parse? (K)arus.ru, (R)arim.ru"
 str = gets.strip.capitalize
