@@ -6,7 +6,10 @@ def karus_method
   site_url = "https://karus.ru/program/?city=&adv_type=&search=&letters=&page=&per_page=&preview=true&map=false&per_page=True"
   document = get_nokogiri_document(site_url)
   table = document.at('table.table-data')
-  html_array=[]
+  html_array = karus_table_in_array(table)
+end
+
+def karus_table_in_array (table,html_array=[])
   table.css('tr').each do |tr_node|
     array = []
     tr_node.css('td').each_with_index do |td, index|
