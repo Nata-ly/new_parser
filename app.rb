@@ -36,7 +36,10 @@ def rarim_method
   site_url = "http://www.rarim.ru/razmeshchenie-reklamy-na-reklamonositelyah/karta-razmeshcheniya/"
   document = get_nokogiri_document(site_url)
   table = document.css('script')
-  array = []
+  array = rarim_table_in_array (table)
+end
+
+def rarim_table_in_array (table, array=[])
   table.css('script').each do |tr_node|
     if tr_node.to_s.include? "yandexMapsData.push"
       str_node = tr_node.to_s
