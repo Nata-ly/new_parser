@@ -6,7 +6,29 @@ def karus_method
   response = RestClient.get(server)
   document = Nokogiri::HTML(response)
   table = document.at('table.table-data')
+  html_array=[]
+  table.css('tr').each do |tr_node|
+    array = []
+    tr_node.css('td').each_with_index do |td, index|
+      array << td.text
+      if  index == 3
+        td.css('a').map { |link|  array << link['href'] }
+      end
+    end
+    sourse_page = 'https://karus.ru' + array[4].to_s
+      hh = { adress: array[0], side: array[1], backlight: array[2],
+        gid: array[3], sourse_page: sourse_page, town: array[5],
+        grp: array[6] }
+      html_array << hh
+  end
+  html_array[0]={ adress: 'Адрес', side: 'Сторона', backlight: 'Подсветка',
+    gid: 'Гид', sourse_page: 'Ссылка', town: 'Город',
+    grp: 'grp'}
+  # Deleting the last element in the array.
+  html_array.delete_at(html_array.length-1)
+  html_array
 end
+
 
 puts "What site are we going to parse? (K)arus.ru, (R)arim.ru"
 str = gets.strip.capitalize
